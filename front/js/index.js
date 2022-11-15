@@ -1,0 +1,43 @@
+// <!--           <a href="./product.html?id=42">
+// <article>
+//   <img src=".../product01.jpg" alt="Lorem ipsum dolor sit amet, Kanap name1">
+//   <h3 class="productName">Kanap name1</h3>
+//   <p class="productDescription">Dis enim malesuada risus sapien gravida nulla nisl arcu. Dis enim malesuada risus sapien gravida nulla nisl arcu.</p>
+// </article>
+// </a> -->
+
+const items = document.querySelector("#items");
+
+// Récupérer les données avec fetch //
+fetch("http://localhost:3000/api/products")
+  .then((res) => res.json())
+  .then((data) => {
+    data.forEach((product) => {
+      // Création d'un élément "a" //
+      const anchor = document.createElement("a");
+      anchor.href = `./product.html?id=${product._id}`;
+
+      // Création d'un élément "article" //
+      const article = document.createElement("article");
+      anchor.appendChild(article);
+
+      // Création d'une image //
+      const image = document.createElement("img");
+      image.src = product.imageUrl;
+      image.alt = product.altTxt;
+      article.appendChild(image);
+
+      // Création du H3 //
+      const h3 = document.createElement("h3");
+      h3.textContent = product.name;
+      h3.classList.add("productName");
+      article.appendChild(h3);
+
+      // Création du P //
+      const p = document.createElement("p");
+      p.textContent = product.description;
+      p.classList.add("productDescription");
+      article.appendChild(p);
+      items.appendChild(anchor);
+    });
+  });
