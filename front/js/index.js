@@ -17,23 +17,23 @@ fetch("http://localhost:3000/api/products")
       const anchor = document.createElement("a");
       anchor.href = `./product.html?id=${product._id}`;
 
-      // Création d'un élément "article" //
+      // Affichage de l'élément "article" //
       const article = document.createElement("article");
       anchor.appendChild(article);
 
-      // Création d'une image //
+      // Affichage des images //
       const image = document.createElement("img");
       image.src = product.imageUrl;
       image.alt = product.altTxt;
       article.appendChild(image);
 
-      // Création du H3 //
+      // Affichage du H3 //
       const h3 = document.createElement("h3");
       h3.textContent = product.name;
       h3.classList.add("productName");
       article.appendChild(h3);
 
-      // Création du P //
+      // Affichage du P //
       const p = document.createElement("p");
       p.textContent = product.description;
       p.classList.add("productDescription");
