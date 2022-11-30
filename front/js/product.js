@@ -78,9 +78,11 @@ if (button != null) {
     const data = {
       id: id,
       color: color,
+
       quantity: Number(quantity),
     };
 
+    // appel de la fonction qui ajout l'objet au tableau dans le local storage //
     addToCart(data);
 
     // Redirection vers le panier//
@@ -95,13 +97,22 @@ function addToCart(data) {
   } else {
     cart = [];
   }
+
+  // Permet de trouver dans le panier actuel si le produit est déjà dedans à l'aide de son id & de sa couleur //
   const cartItem = cart.find(
     (item) => item.id === data.id && item.color === data.color
   );
   if (cartItem) {
     cartItem.quantity += data.quantity;
+    // message qui indique au client que le produit a été ajouté au panier //
+    alert("Votre article à été ajouté au panier");
   } else {
+    // on pousse le produit dans le panier//
     cart.push(data);
+    // on sauvegarde le panier dans le local storage //
+
+    // message qui indique au client que le produit a été ajouté au panier //
+    alert("Votre acticle à été ajouté au panier");
   }
   localStorage.setItem("cart", JSON.stringify(cart));
 }
