@@ -78,7 +78,6 @@ if (button != null) {
     const data = {
       id: id,
       color: color,
-
       quantity: Number(quantity),
     };
 
