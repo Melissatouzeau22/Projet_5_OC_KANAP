@@ -1,13 +1,6 @@
-// <!--  <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-// <div class="cart__item__img">
-//   <img src="../images/product01.jpg" alt="Photographie d'un canapé">
-// </div>
-// <div class="cart__item__content">
-//   <div class="cart__item__content__description">
-//     <h2>Nom du produit</h2>
-//     <p>Vert</p>
-//     <p>42,00 €</p>
-//   </div>
+// <!--  <article>
+
+// <div>
 //   <div class="cart__item__content__settings">
 //     <div class="cart__item__content__settings__quantity">
 //       <p>Qté : </p>
@@ -27,7 +20,6 @@ displayItems();
 async function displayItems() {
   for (const product of cart) {
     const article = await makeArticle(product);
-
     wrapper.appendChild(article);
   }
 }
@@ -43,7 +35,7 @@ function getCart() {
 }
 
 // sauvegarde le panier dans le localStorage //
-function addToCart(cart) {
+function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
@@ -61,15 +53,17 @@ async function makeArticle(element) {
   console.log(product);
   const image = makeImage(product.imageUrl, product.altTxt);
   article.appendChild(image);
+
   // creer card_item_content //
-  const cartItemContent = document.createElement("div");
-  cartItemContent.classList.add("cart__item__content");
-  article.appendChild(cartItemContent);
-  //creer card_item_content_description //
-  const description = document.createElement("div");
-  description.classList.add("cart__item__content__description");
-  cartItemContent.appendChild(description);
+  const content = makeCartItemContent(
+    product.name,
+    product.price,
+    element.color,
+    element.quantity
+  );
+  article.appendChild(content);
   return article;
+  // cart__item__content__settings//
 }
 function makeImage(url, alt) {
   const image = document.createElement("img");
@@ -81,21 +75,65 @@ function makeImage(url, alt) {
   return imageContainer;
 }
 
-function makeCartItemContent(name, price, color) {
+function makeCartItemContent(name, price, color, quantity) {
   const cartItemContent = document.createElement("div");
   cartItemContent.classList.add("cart__item__content");
 
-  const description = document.createElement("div");
-  description.classList.add("cart__item__content__description");
+  const description = makeContentDescription(name, color, price);
   cartItemContent.appendChild(description);
 
-  const h2 = document.createElement("h2");
-  h2.textContent = element.name;
-  const p = document.createElement("p");
-  p.textContent = element.color;
-  const p2 = document.createElement("p");
-  p2.textContent = element.price = " €";
-  description.appendChild(h2);
-  description.appendChlid(p);
-  description.appendChild(p2);
+  const settings = makeContentSettings(quantity);
+  cartItemContent.appendChild(settings);
+
+  return cartItemContent;
+}
+
+function makeContentDescription(name, color, price) {
+  const description = document.createElement("div");
+  description.classList.add("cart__item__content__description");
+
+  const title = document.createElement("h2");
+  title.textContent = name;
+  description.appendChild(title);
+
+  const colorElement = document.createElement("p");
+  colorElement.textContent = color;
+  description.appendChild(colorElement);
+
+  const priceElement = document.createElement("p");
+  priceElement.textContent = price + " €";
+  description.appendChild(priceElement);
+  return description;
+}
+
+function makeContentSettings(quantity) {
+  const settings = document.createElement("div");
+  settings.classList.add("cart__item__content__settings");
+
+  const settingsQuantity = document.createElement("div");
+  settingsQuantity.classList.add("cart__item__content__settings__quantity");
+  settings.appendChild(settingsQuantity);
+
+  const settingsDelete = document.createElement("div");
+  settingsDelete.classList.add("cart__item__content__settings__delete");
+  settings.appendChild(settingsDelete);
+
+  const quantityElement = document.createElement("p");
+  quantityElement.textContent = "Qté : ";
+  settingsQuantity.appendChild(quantityElement);
+
+  const quantityInput = document.createElement("input");
+  quantityInput.type = "number";
+  quantityInput.classList.add("itemQuantity");
+  quantityInput.name = "itemQuantity";
+  quantityInput.min = 1;
+  quantityInput.max = 100;
+  quantityInput.value = quantity;
+  settingsQuantity.appendChild(quantityInput);
+
+  const deleteElement = document.createElement("p");
+  deleteElement.classList.add("deleteItem");
+  deleteElement.textContent = "Supprimer";
+  settingsDelete.appendChild(deleteElement);
+  return settings;
 }
