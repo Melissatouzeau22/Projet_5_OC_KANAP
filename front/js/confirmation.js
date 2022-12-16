@@ -1,8 +1,5 @@
 // Récupération de l'orderId du produit via l'URL
-const orderId = new URL(window.location).searchParams.get("order__id");
+const orderId = new URL(window.location).searchParams.get("order_id");
 
 // Affichage du numéro de la commande
-function displayOrderId(products) {
-  document.getElementById("orderId").innerText = `${products}`;
-}
-displayOrderId(orderId);
+document.getElementById("orderId").innerText = orderId;

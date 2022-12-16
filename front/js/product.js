@@ -1,6 +1,5 @@
 // Récupérer l'id du produit via l'URL //
 const queryString = window.location.search;
-console.log(queryString);
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get("id");
 
@@ -68,9 +67,14 @@ if (button != null) {
     const color = document.querySelector("#colors").value;
     const quantity = document.querySelector("#quantity").value;
 
-    // Message d'alerte en cas de couleur & quantité vide pour l'ajout au panier//
+    // Message d'alerte en cas de couleur & quantité vide pour l'ajout au panier
     if (color == null || color === "" || quantity == null || quantity == 0) {
       alert("Please select a color and quantity");
+      return;
+    }
+    // Message d'alerte en cas de quantité non comprise entre 0 & 100
+    if (quantity < 1 || quantity > 100) {
+      alert("veuillez saisir une quantité entre 1 et 100");
       return;
     }
 

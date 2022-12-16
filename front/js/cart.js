@@ -1,13 +1,3 @@
-{
-  /* <div class="cart__price">
-<p>
-  Total (<span id="totalQuantity"><!-- 2 --></span> articles) :
-  <span id="totalPrice"><!-- 84,00 --></span> €
-</p>
-</div>
- */
-}
-
 const wrapper = document.getElementById("cart__items");
 const cart = getCart();
 const products = [];
@@ -33,7 +23,7 @@ function getCart() {
   return cart;
 }
 
-// sauvegarde le panier dans le localStorage //
+// sauvegarde le panier dans le localStorage
 function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
@@ -139,7 +129,7 @@ function makeContentSettings(quantity) {
   return settings;
 }
 
-//fonction pour additionner les quantity//
+//fonction pour additionner les quantity
 function setTotalQuantity() {
   // On pointe l'élément //
   const totalQuantity = document.querySelector("#totalQuantity");
@@ -147,7 +137,7 @@ function setTotalQuantity() {
   totalQuantity.textContent = total;
 }
 
-//fonction pour additionner les prix//
+//fonction pour additionner les prix
 function setTotalPrice() {
   // On pointe l'élément //
   const totalPrice = document.querySelector("#totalPrice");
@@ -209,19 +199,19 @@ const orderButton = document.querySelector("#order");
 orderButton.addEventListener("click", (e) => submitForm(e));
 
 function submitForm(e) {
-  // Ne pas rafraichir la page //
+  // Ne pas rafraichir la page
   e.preventDefault();
-  // Message d'erreur en cas de panier vide//
+  // Message d'erreur en cas de panier vide
   if (cart.length === 0) {
-    alert("Please select a product");
+    alert("Merci de selectionner un article");
     return;
   }
 
-  //on pointe l'élément//
+  //on pointe l'élément
   const form = document.querySelector(".cart__order__form");
   const contact = new FormData(form);
 
-  // Requête Fetch //
+  // Requête Fetch
   fetch("http://localhost:3000/api/products/order", {
     method: "post",
     headers: {
@@ -233,7 +223,10 @@ function submitForm(e) {
     }),
   })
     .then((res) => res.json())
-    .then((data) => console.log(data));
+    .then((data) => {
+      saveCart([]);
+      window.location.href = `confirmation.html?order_id=${data.orderId}`;
+    });
 }
 
 //définition des différentes RegExp
@@ -257,6 +250,8 @@ function checkUserInformations(input, regex) {
     input.style.border = "2px solid red";
     document.getElementById(`${id}ErrorMsg`).innerText =
       "Le format renseignée n' est pas valide";
+    alert("Merci de saisir des données valide");
+    return;
   }
 }
 
@@ -264,7 +259,6 @@ function checkUserInformations(input, regex) {
 for (let input of document.querySelector(".cart__order__form")) {
   if (input.type === "text" || input.type === "email") {
     input.addEventListener("change", (e) => {
-      console.log(e.target.id);
       checkUserInformations(e.target, RegExpList[e.target.id]);
     });
   }
