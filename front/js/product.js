@@ -69,7 +69,7 @@ if (button != null) {
 
     // Message d'alerte en cas de couleur & quantité vide pour l'ajout au panier
     if (color == null || color === "" || quantity == null || quantity == 0) {
-      alert("Please select a color and quantity");
+      alert("Veuillez saisir une quantité et une couleur");
       return;
     }
     // Message d'alerte en cas de quantité non comprise entre 0 & 100
